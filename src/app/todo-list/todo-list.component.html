@@ -1,0 +1,33 @@
+<div class="todo-list-container">
+  <h1>Todos</h1>
+  
+  <div class="add-todo">
+    <input #todoInput type="text" placeholder="What needs to be done?" (keyup.enter)="addTodo(todoInput.value); todoInput.value=''">
+  </div>
+
+  <ul class="todo-list">
+    <li *ngFor="let todo of filteredTodos()" [ngClass]="{ completed: todo.completed, editing: todo.editing }">
+      <div class="view">
+        <input class="toggle" type="checkbox" [checked]="todo.completed" (click)="toggleCompletion(todo)">
+        <span
+          [attr.contenteditable]="todo.editing"
+          (dblclick)="editTodo(todo)"
+          (blur)="doneEdit(todo)"
+          (keyup.enter)="doneEdit(todo)"
+          (keydown.enter)="preventNewline($event)"
+          [ngClass]="{ editing: todo.editing }"
+        >{{ todo.text }}</span>
+        <img src="https://cdn-icons-png.flaticon.com/128/2961/2961937.png" (click)="removeTodo(todo)">
+      </div>
+    </li>
+  </ul>
+
+  <div class="buttons" *ngIf="todos.length > 0">
+    <span>{{ remainingTasks }} items left</span>
+    <button class="filter-btn" (click)="setFilter('all')">All</button>
+    <button class="filter-btn" (click)="setFilter('active')">Active</button>
+    <button class="filter-btn" (click)="setFilter('completed')">Completed</button>
+    <button class="other-btn" (click)="toggleAllTodos()">Toggle All</button>
+    <button class="other-btn" *ngIf="hasCompletedTodos()" (click)="removeAllCompletedTodos()">Clear Completed</button>
+  </div>
+</div>
