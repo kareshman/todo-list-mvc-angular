@@ -9,6 +9,7 @@ import { Todo } from '../todo-model/todo-model';
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   filter: string = 'all';
+  switcher: boolean = true;
 
   constructor() {}
 
@@ -62,7 +63,13 @@ export class TodoListComponent implements OnInit {
   }
 
   toggleAllTodos() {
-    this.todos.forEach(todo => todo.completed = !todo.completed);
+    if (this.switcher) {
+      this.todos.forEach(todo => todo.completed = true);
+      this.switcher = !this.switcher;
+    } else {
+      this.todos.forEach(todo => todo.completed = false);
+      this.switcher = !this.switcher;
+    }
   }
 
   hasCompletedTodos(): boolean {
